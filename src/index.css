@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+        body { font-family: 'Poppins', sans-serif; }
+        
+        :root {
+            --primary: #7D71A7;
+            --secondary: #CAADFF;
+            --accent1: #FFC2E2;
+            --accent2: #FFADC7;
+            --light: #FCF6D9;
+        }
+        
+        .bg-primary { background-color: var(--primary); }
+        .bg-secondary { background-color: var(--secondary); }
+        .bg-accent1 { background-color: var(--accent1); }
+        .bg-accent2 { background-color: var(--accent2); }
+        .bg-light { background-color: var(--light); }
+        
+        .text-primary { color: var(--primary); }
+        .text-secondary { color: var(--secondary); }
+        .text-accent1 { color: var(--accent1); }
+        .text-accent2 { color: var(--accent2); }
+        
+        .border-primary { border-color: var(--primary); }
+        .border-secondary { border-color: var(--secondary); }
+        
+        .gradient-bg { 
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent1) 50%, var(--accent2) 100%); 
+        }
+        
+        .card-hover { 
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+        }
+        .card-hover:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 20px 40px rgba(125, 113, 167, 0.15); 
+        }
+        
+        .floating { 
+            animation: float 3s ease-in-out infinite; 
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .pulse-soft {
+            animation: pulse-soft 2s infinite;
+        }
+        
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
