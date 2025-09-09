@@ -1,6 +1,10 @@
 import React from "react";
+import Consultation from "./Consultation";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Hero() {
+  const navigate = useNavigate();
   const heroStyle = {
     height: "100vh",
     display: "flex",
@@ -36,7 +40,7 @@ export default function Hero() {
   };
 
   const primaryButtonStyle = {
-    backgroundColor: "#ff6f00", // Orange accent
+    backgroundColor: "#2192FF", // Orange accent
     color: "#fff",
     padding: "12px 28px",
     borderRadius: "30px",
@@ -44,16 +48,16 @@ export default function Hero() {
     fontSize: "1rem",
     fontWeight: "600",
     cursor: "pointer",
-    boxShadow: "0 4px 12px rgba(255, 111, 0, 0.4)",
+    boxShadow: "0 4px 20px rgba(59, 130, 246, 0.4), 0 0 10px rgba(59, 130, 246, 0.6)",
     transition: "all 0.3s ease",
   };
 
   const secondaryButtonStyle = {
     backgroundColor: "transparent",
-    color: "#ff6f00",
+    color: "#50D890",
     padding: "12px 28px",
     borderRadius: "30px",
-    border: "2px solid #ff6f00",
+    border: "2px solid #50D890",
     fontSize: "1rem",
     fontWeight: "600",
     cursor: "pointer",
@@ -64,7 +68,7 @@ export default function Hero() {
     <section style={heroStyle}>
       <h1 style={headingStyle}>
         Bridging Healthcare Gaps for{" "}
-        <span style={{ color: "#ff6f00" }}>Rural Communities</span>
+        <span style={{ color: "#00DFA2" }}>Rural Communities</span>
       </h1>
       <h3
         style={{
@@ -86,23 +90,26 @@ export default function Hero() {
         <button
           style={primaryButtonStyle}
           onMouseEnter={(e) =>
-            (e.target.style.backgroundColor = "#e65100")
+            (e.target.style.backgroundColor = "#0079FF")
           }
           onMouseLeave={(e) =>
-            (e.target.style.backgroundColor = "#ff6f00")
+            (e.target.style.backgroundColor = "#2192FF")
           }
+          onClick={()=> navigate('/consultation')}
         >
           Start Consultation
         </button>
         <button
           style={secondaryButtonStyle}
           onMouseEnter={(e) => {
-            e.target.style.backgroundColor = "#ff6f00";
+            e.target.style.backgroundColor = "#06923E";
             e.target.style.color = "#fff";
+            e.target.style.border = "2px solid #fff";
           }}
           onMouseLeave={(e) => {
             e.target.style.backgroundColor = "transparent";
-            e.target.style.color = "#ff6f00";
+            e.target.style.color = "#50D890";
+            e.target.style.border = "2px solid #50D890";
           }}
         >
           Learn More

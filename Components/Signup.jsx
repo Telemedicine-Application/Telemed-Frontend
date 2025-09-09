@@ -5,6 +5,7 @@ export default function PatientSignup() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
+    profilePic: null, // NEW
     full_name: "",
     phone: "",
     gender: "Male",
@@ -14,10 +15,19 @@ export default function PatientSignup() {
     password: "",
   });
 
+  const [preview, setPreview] = useState(null); // for image preview
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData({ ...formData, profilePic: file });
+      setPreview(URL.createObjectURL(file)); // show preview
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -25,10 +35,15 @@ export default function PatientSignup() {
     setLoading(true);
 
     try {
+      // Using FormData since we may upload files
+      const formDataToSend = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        formDataToSend.append(key, value);
+      });
+
       const res = await fetch("http://127.0.0.1:5004/patient_signup", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: formDataToSend,
       });
 
       const data = await res.json();
@@ -36,6 +51,7 @@ export default function PatientSignup() {
       if (res.ok) {
         alert(data.message);
         setFormData({
+          profilePic: null,
           full_name: "",
           phone: "",
           gender: "Male",
@@ -44,6 +60,7 @@ export default function PatientSignup() {
           language: "English",
           password: "",
         });
+        setPreview(null);
         navigate("/login");
       } else {
         alert("Error: " + data.error);
@@ -65,6 +82,30 @@ export default function PatientSignup() {
 
       <div style={styles.formWrapper}>
         <form style={styles.form} onSubmit={handleSubmit}>
+          {/* Profile Picture Upload */}
+          <div style={styles.profileContainer}>
+            <div style={styles.imageWrapper}>
+              {preview ? (
+                <img
+                  src={preview}
+                  alt="Profile Preview"
+                  style={styles.profileImage}
+                />
+              ) : (
+                <div style={styles.placeholder}>+</div>
+              )}
+            </div>
+            <label style={styles.uploadButton}>
+              Upload Photo
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+              />
+            </label>
+          </div>
+
           <label>Full Name</label>
           <input
             type="text"
@@ -162,8 +203,8 @@ export default function PatientSignup() {
 const styles = {
   container: {
     backgroundColor: "#0e1525",
-    height: "89vh",
-    padding: "45px 20px",
+    height: "95vh",
+    padding: "40px 20px",
     color: "#fff",
     textAlign: "center",
   },
@@ -173,14 +214,14 @@ const styles = {
     marginBottom: "10px",
     color: "#f97316",
   },
-  subheading: { fontSize: "16px", marginBottom: "40px", color: "#ccc" },
+  subheading: { fontSize: "16px", marginBottom: "30px", color: "#ccc" },
   formWrapper: { display: "flex", justifyContent: "center" },
   form: {
     backgroundColor: "#1e293b",
     padding: "30px",
     borderRadius: "15px",
     width: "100%",
-    maxWidth: "400px",
+    maxWidth: "420px",
     textAlign: "left",
     boxShadow: "0 4px 15px rgba(0,0,0,0.5)",
   },
@@ -201,6 +242,41 @@ const styles = {
   },
   rowItem: {
     flex: 1,
+  },
+  profileContainer: {
+    textAlign: "center",
+    marginBottom: "20px",
+  },
+  imageWrapper: {
+    width: "100px",
+    height: "100px",
+    borderRadius: "50%",
+    overflow: "hidden",
+    margin: "0 auto 10px",
+    backgroundColor: "#0f172a",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    border: "2px solid #f97316",
+  },
+  profileImage: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+  },
+  placeholder: {
+    fontSize: "32px",
+    color: "#ccc",
+  },
+  uploadButton: {
+    display: "inline-block",
+    padding: "8px 16px",
+    backgroundColor: "#f97316",
+    borderRadius: "6px",
+    color: "#fff",
+    fontSize: "14px",
+    cursor: "pointer",
+    transition: "0.3s",
   },
   submitButton: {
     width: "50%",

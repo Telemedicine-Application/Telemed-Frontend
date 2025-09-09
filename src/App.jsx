@@ -8,6 +8,10 @@ import Contact from '../Components/Contact';
 import Footer from '../Components/Footer';
 import Signup from '../Components/Signup.jsx';
 import Login from '../Components/Login.jsx';
+import Consultation from '../Components/Consultation.jsx';
+import DoctorLogin from '../Components/DoctorLogin.jsx';
+
+
 
 import ProtectedRoute from './Routes/ProtectedRoute.jsx';
 import './index.css';
@@ -68,6 +72,12 @@ const AppContent = () => {
             </>
           }
         />
+        <Route
+          path='/consultation'
+          element={
+            <Consultation/>
+          }
+        />
 
         <Route
           path="/signup"
@@ -84,7 +94,9 @@ const AppContent = () => {
               <Login />
             </ProtectedRoute>
           }
+          
         />
+        
 
         {/* <Route
           path="/chat"

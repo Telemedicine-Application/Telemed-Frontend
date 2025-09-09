@@ -30,7 +30,7 @@ export default function About() {
     fontSize: "2.2rem",
     fontWeight: "bold",
     textAlign: "center",
-    color: "#ff7a00",
+    color: "#00DFA2",
     marginBottom: "10px",
   };
 
@@ -47,7 +47,7 @@ export default function About() {
 
   const featureTitleStyle = {
     fontWeight: "bold",
-    color: "#ff7a00",
+    color: "#00DFA2",
     marginBottom: "5px",
   };
 
@@ -111,7 +111,7 @@ export default function About() {
         <div style={leftColStyle}>
           <h3
             style={{
-              color: "#ff7a00",
+              color: "#00DFA2",
               fontWeight: "bold",
               marginBottom: "30px",
             }}
@@ -120,7 +120,7 @@ export default function About() {
           </h3>
 
           <div style={featureRowStyle}>
-            <div style={iconBoxStyle("#ff7a00")}>🔒</div>
+            <div style={iconBoxStyle("#1f1f1f")}>🔒</div>
             <div>
               <p style={featureTitleStyle}>Secure & Private</p>
               <p style={{ color: "#ddd" }}>
@@ -131,7 +131,7 @@ export default function About() {
           </div>
 
           <div style={featureRowStyle}>
-            <div style={iconBoxStyle("#ff5500")}>🌐</div>
+            <div style={iconBoxStyle("#1f1f1f")}>🌐</div>
             <div>
               <p style={featureTitleStyle}>Multilingual Support</p>
               <p style={{ color: "#ddd" }}>
@@ -141,7 +141,7 @@ export default function About() {
           </div>
 
           <div style={featureRowStyle}>
-            <div style={iconBoxStyle("#d94f00")}>⚡</div>
+            <div style={iconBoxStyle("#1f1f1f")}>⚡</div>
             <div>
               <p style={featureTitleStyle}>AI Symptom Checker</p>
               <p style={{ color: "#ddd" }}>
@@ -151,7 +151,7 @@ export default function About() {
           </div>
 
           <div style={featureRowStyle}>
-            <div style={iconBoxStyle("#333")}>💊</div>
+            <div style={iconBoxStyle("#1f1f1f")}>💊</div>
             <div>
               <p style={featureTitleStyle}>Medicine Availability</p>
               <p style={{ color: "#ddd" }}>
@@ -165,7 +165,7 @@ export default function About() {
         <div style={rightColStyle}>
           <h4
             style={{
-              color: "#ff7a00",
+              color: "#00DFA2",
               fontWeight: "bold",
               marginBottom: "20px",
             }}
