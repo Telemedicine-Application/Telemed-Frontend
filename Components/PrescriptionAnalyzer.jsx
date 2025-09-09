@@ -56,7 +56,7 @@ const PrescriptionAnalyzer = () => {
     }
   };
 
-  // Enhanced medicine patterns for Indian prescriptions
+  // Enhanced medicines patterns for Indian prescriptions
   const medicalTerms = {
     antibiotics: ['amoxicillin', 'azithromycin', 'ciprofloxacin', 'doxycycline', 'clindamycin', 'amoxyclav', 'cefixime'],
     painRelief: ['paracetamol', 'acetaminophen', 'ibuprofen', 'aspirin', 'diclofenac', 'nimesulide', 'tramadol'],
