@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import Navbar from '../Components/Navbar.jsx';
 import Hero from '../Components/Hero';
 import About from '../Components/About';
@@ -9,11 +10,9 @@ import Footer from '../Components/Footer';
 import Signup from '../Components/Signup.jsx';
 import Login from '../Components/Login.jsx';
 import Consultation from '../Components/Consultation.jsx';
-import DoctorLogin from '../Components/DoctorLogin.jsx';
-
-
-
+//import DoctorLogin from '../Components/DoctorLogin.jsx';
 import ProtectedRoute from './Routes/ProtectedRoute.jsx';
+import PrescriptionAnalyzer from '../Components/PrescriptionAnalyzer.jsx';
 import './index.css';
 
 const AppContent = () => {
@@ -43,22 +42,42 @@ const AppContent = () => {
         }
       }
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <div className="smooth-scroll bg-light">
+      {/* Add Toaster here with your custom styling */}
+      <Toaster
+        toastOptions={{
+          style: {
+            background: '#1e293b',
+            color: '#fff',
+            border: '1px solid #f97316',
+          },
+          success: {
+            iconTheme: {
+              primary: '#f97316',
+              secondary: '#fff',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: '#fff',
+            },
+          },
+        }}
+      />
 
-      {location.pathname !== "/chat" && (
+      {location.pathname !== "/login" && (
         <Navbar
           isMobileMenuOpen={isMobileMenuOpen}
           toggleMobileMenu={toggleMobileMenu}
           scrollToSection={scrollToSection}
         />
       )}
-
       <Routes>
         <Route
           path="/"
@@ -74,11 +93,12 @@ const AppContent = () => {
         />
         <Route
           path='/consultation'
-          element={
-            <Consultation/>
-          }
+          element={<Consultation />}
         />
-
+        <Route
+          path='/prescription-analyzer'
+          element={<PrescriptionAnalyzer />}
+        />
         <Route
           path="/signup"
           element={
@@ -94,18 +114,7 @@ const AppContent = () => {
               <Login />
             </ProtectedRoute>
           }
-          
         />
-        
-
-        {/* <Route
-          path="/chat"
-          element={
-            <ProtectedRoute>
-              <Chatbot />
-            </ProtectedRoute>
-          }
-        /> */}
       </Routes>
     </div>
   );

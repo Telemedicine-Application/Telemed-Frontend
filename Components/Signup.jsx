@@ -5,8 +5,8 @@ export default function PatientSignup() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    profilePic: null, // NEW
-    full_name: "",
+    profilePic: null,
+    fullname: "", // Changed from full_name to match backend
     phone: "",
     gender: "Male",
     dob: "",
@@ -15,7 +15,7 @@ export default function PatientSignup() {
     password: "",
   });
 
-  const [preview, setPreview] = useState(null); // for image preview
+  const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -25,8 +25,13 @@ export default function PatientSignup() {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setFormData({ ...formData, profilePic: file });
-      setPreview(URL.createObjectURL(file)); // show preview
+      // Convert image to base64 for backend
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({ ...formData, profilePic: reader.result });
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -35,24 +40,22 @@ export default function PatientSignup() {
     setLoading(true);
 
     try {
-      // Using FormData since we may upload files
-      const formDataToSend = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
-        formDataToSend.append(key, value);
-      });
-
-      const res = await fetch("http://127.0.0.1:5004/patient_signup", {
+      // Send JSON data instead of FormData since backend expects JSON
+      const res = await fetch("http://127.0.0.1:5000/api/auth/signup", {
         method: "POST",
-        body: formDataToSend,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
 
       const data = await res.json();
 
-      if (res.ok) {
-        alert(data.message);
+      if (data.success) {
+        alert(data.message || "Registration successful!");
         setFormData({
           profilePic: null,
-          full_name: "",
+          fullname: "",
           phone: "",
           gender: "Male",
           dob: "",
@@ -63,11 +66,11 @@ export default function PatientSignup() {
         setPreview(null);
         navigate("/login");
       } else {
-        alert("Error: " + data.error);
+        alert("Error: " + (data.message || data.mesaage || "Registration failed"));
       }
     } catch (err) {
-      console.error(err);
-      alert("Something went wrong!");
+      console.error("Network error:", err);
+      alert("Network error! Please check if the server is running.");
     } finally {
       setLoading(false);
     }
@@ -109,8 +112,8 @@ export default function PatientSignup() {
           <label>Full Name</label>
           <input
             type="text"
-            name="full_name"
-            value={formData.full_name}
+            name="fullname"
+            value={formData.fullname}
             onChange={handleChange}
             style={styles.input}
             required
@@ -203,7 +206,7 @@ export default function PatientSignup() {
 const styles = {
   container: {
     backgroundColor: "#0e1525",
-    height: "95vh",
+    minHeight: "100vh", // Changed from height to minHeight
     padding: "40px 20px",
     color: "#fff",
     textAlign: "center",
@@ -234,6 +237,7 @@ const styles = {
     outline: "none",
     backgroundColor: "#0f172a",
     color: "#fff",
+    boxSizing: "border-box", // Added for better sizing
   },
   row: {
     display: "flex",

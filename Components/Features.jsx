@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Features() {
+  const navigate = useNavigate();
+
   const features = [
     {
       icon: "📹",
@@ -9,6 +12,7 @@ export default function Features() {
         "Connect with doctors remotely through secure video calls, reducing the need for long travel.",
       button: "Consult Now",
       color: "#ff6f00",
+      action: () => navigate("/consultation")
     },
     {
       icon: "📋",
@@ -17,6 +21,16 @@ export default function Features() {
         "Access and update patient records anytime, even offline — ensuring continuity of care in rural areas.",
       button: "View Records",
       color: "#ff8f00",
+      action: () => console.log("Navigate to health records")
+    },
+    {
+      icon: "🔍",
+      title: "Online Prescription Analyzer",
+      description:
+        "Upload your prescription image and get clear, readable text instantly. Perfect for understanding handwritten prescriptions.",
+      button: "Analyze Prescription",
+      color: "#ff9800",
+      action: () => navigate("/prescription-analyzer")
     },
     {
       icon: "💊",
@@ -25,6 +39,7 @@ export default function Features() {
         "Get real-time updates on medicine stock at nearby pharmacies to avoid unnecessary visits.",
       button: "Check Medicines",
       color: "#ffa000",
+      action: () => console.log("Navigate to medicine availability")
     },
     {
       icon: "🤖",
@@ -33,6 +48,7 @@ export default function Features() {
         "Use an AI-powered assistant to check symptoms quickly, even in low-bandwidth areas.",
       button: "Start Check",
       color: "#ffb300",
+      action: () => console.log("Navigate to symptom checker")
     },
   ];
 
@@ -136,6 +152,7 @@ export default function Features() {
               onMouseLeave={(e) =>
                 (e.target.style.backgroundColor = feature.color)
               }
+              onClick={feature.action}
             >
               {feature.button}
             </button>
