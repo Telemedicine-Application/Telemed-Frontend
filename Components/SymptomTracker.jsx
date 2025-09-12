@@ -865,3 +865,4 @@ Remember to emphasize that this analysis is not medical advice and professional 
 };
 
 export default SymptomTracker;
+
