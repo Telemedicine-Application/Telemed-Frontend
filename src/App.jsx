@@ -17,6 +17,7 @@ import ForgotPassword from '../Components/ForgotPassword.jsx';
 //import ProtectedRoute from './Routes/ProtectedRoute.jsx';
 import DoctorDashboard from '../Components/doctorDashboard.jsx';
 import PrescriptionAnalyzer from '../Components/PrescriptionAnalyzer.jsx';
+import SymptomTracker from '../Components/SymptomTracker.jsx';
 import './index.css';
 
 const AppContent = () => {
@@ -102,6 +103,11 @@ const AppContent = () => {
         <Route
           path='/prescription-analyzer'
           element={<PrescriptionAnalyzer />}
+        />
+
+        <Route
+          path='/symptom-tracker'
+          element={<SymptomTracker />}
         />
         <Route
           path="/signup"
