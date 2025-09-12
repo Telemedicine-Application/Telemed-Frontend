@@ -7,7 +7,7 @@ export default function Login() {
 
   const [loginType, setLoginType] = useState("patient");
   const [formData, setFormData] = useState({
-    phone: "", // Fixed: backend expects 'phone', not 'email'
+    phone: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
@@ -21,9 +21,9 @@ export default function Login() {
     setLoading(true);
 
     try {
-      // For now, only patient login is implemented in your backend
-      // You can add doctor login endpoint later
-      const endpoint = "http://127.0.0.1:5000/api/auth/login"; // Fixed port and endpoint
+      let endpoint = loginType === "patient"
+        ? "http://127.0.0.1:5000/api/auth/login"
+        : "http://localhost:5004/api/auth/login";
 
       const res = await fetch(endpoint, {
         method: "POST",
@@ -36,37 +36,37 @@ export default function Login() {
 
       const data = await res.json();
 
-      if (data.success) {
-        // Store token and user data
-        if (data.token) {
+      if (res.ok && data.token) {
+        // Store tokens separately for doctor and patient
+        if (loginType === "doctor") {
+          localStorage.setItem("doctorToken", data.token);
+          localStorage.setItem("doctor", JSON.stringify(data.doctor));
+        } else {
           localStorage.setItem("authToken", data.token);
           localStorage.setItem("user", JSON.stringify(data.userData));
-          
-          toast.success(data.message || "Login successful! 🎉", {
-            duration: 4000,
-            position: 'top-center',
-          });
-          
-          // Navigate after a short delay
-          setTimeout(() => {
-            if (loginType === "doctor") {
-              navigate("/doctor-dashboard", { replace: true });
-            } else {
-              navigate("/consultation", { replace: true }); // Or wherever you want patients to go
-            }
-          }, 1500);
-        } else {
-          toast.error("No token received from server", {
-            duration: 4000,
-            position: 'top-center',
-          });
         }
+
+        toast.success(data.message || "Login successful! 🎉", {
+          duration: 4000,
+          position: 'top-center',
+        });
+
+        // Navigate after login
+        setTimeout(() => {
+          if (loginType === "doctor") {
+            navigate("/doctor-dashboard", { replace: true });
+          } else {
+            navigate("/consultation", { replace: true });
+          }
+        }, 1500);
+
       } else {
-        toast.error(data.message || "Login failed", {
+        toast.error(data.error || data.message || "Login failed", {
           duration: 4000,
           position: 'top-center',
         });
       }
+
     } catch (err) {
       console.error("Network error:", err);
       toast.error("Network error! Please check if the server is running.", {
@@ -83,7 +83,6 @@ export default function Login() {
       <div style={styles.container}>
         <h2 style={styles.heading}>Login to SehatSaathi 🏥</h2>
         <form style={styles.form} onSubmit={handleSubmit}>
-          {/* Role Selector */}
           <label style={styles.label}>Select Role</label>
           <select
             value={loginType}
@@ -94,11 +93,10 @@ export default function Login() {
             <option value="doctor">Doctor</option>
           </select>
 
-          {/* Doctor login note */}
           {loginType === "doctor" && (
             <div style={styles.noteBox}>
               <p style={styles.noteText}>
-                📝 Doctor login will be implemented soon. Please select Patient for now.
+                📝 Doctor login is live now. Please proceed.
               </p>
             </div>
           )}
@@ -133,26 +131,21 @@ export default function Login() {
 
           <button 
             type="submit" 
-            style={{
-              ...styles.submitButton,
-              ...(loginType === "doctor" ? styles.disabledButton : {})
-            }} 
-            disabled={loading || loginType === "doctor"}
+            style={styles.submitButton}
+            disabled={loading}
           >
-            {loading ? "Logging in..." : loginType === "doctor" ? "Coming Soon" : "Login 🚀"}
+            {loading ? "Logging in..." : "Login 🚀"}
           </button>
 
-          {loginType === "patient" && (
-            <p style={styles.signupText}>
-              Don't have an account?{" "}
-              <span
-                style={styles.signupLink}
-                onClick={() => navigate("/signup")}
-              >
-                Sign Up
-              </span>
-            </p>
-          )}
+          <p style={styles.signupText}>
+            Don't have an account?{" "}
+            <span
+              style={styles.signupLink}
+              onClick={() => navigate(loginType === "doctor" ? "/doctorsignup" : "/signup")}
+            >
+              Sign Up
+            </span>
+          </p>
         </form>
       </div>
     </div>
@@ -160,99 +153,18 @@ export default function Login() {
 }
 
 const styles = {
-  pageWrapper: {
-    minHeight: "100vh",
-    backgroundColor: "#0e1525",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: "20px",
-  },
-  container: {
-    width: "100%",
-    maxWidth: "400px",
-    color: "#fff",
-    textAlign: "center",
-  },
-  heading: {
-    fontSize: "28px",
-    fontWeight: "bold",
-    marginBottom: "20px",
-    color: "#f97316", // Consistent with signup
-  },
-  form: {
-    backgroundColor: "#1e293b", // Consistent with signup
-    padding: "30px",
-    borderRadius: "15px",
-    width: "100%",
-    textAlign: "left",
-    boxShadow: "0 4px 15px rgba(0,0,0,0.5)",
-  },
-  label: {
-    fontSize: "14px",
-    marginBottom: "5px",
-    display: "block",
-    color: "#ddd",
-  },
-  input: {
-    width: "100%",
-    padding: "12px",
-    marginBottom: "15px",
-    border: "1px solid #334155",
-    borderRadius: "8px",
-    outline: "none",
-    backgroundColor: "#0f172a",
-    color: "#fff",
-    boxSizing: "border-box",
-  },
-  noteBox: {
-    backgroundColor: "#1f2937",
-    border: "1px solid #f97316",
-    borderRadius: "8px",
-    padding: "10px",
-    marginBottom: "15px",
-  },
-  noteText: {
-    color: "#f97316",
-    fontSize: "14px",
-    margin: 0,
-  },
-  forgotWrapper: { 
-    textAlign: "right", 
-    marginBottom: "15px" 
-  },
-  forgotLink: {
-    fontSize: "14px",
-    color: "#f97316",
-    textDecoration: "none",
-    cursor: "pointer",
-  },
-  submitButton: {
-    width: "100%",
-    padding: "12px",
-    backgroundColor: "#f97316",
-    border: "none",
-    borderRadius: "8px",
-    fontWeight: "bold",
-    color: "#fff",
-    cursor: "pointer",
-    marginTop: "10px",
-    textAlign: "center",
-    transition: "0.3s",
-  },
-  disabledButton: {
-    backgroundColor: "#6b7280",
-    cursor: "not-allowed",
-  },
-  signupText: {
-    textAlign: "center",
-    fontSize: "14px",
-    marginTop: "20px",
-    color: "#ccc",
-  },
-  signupLink: {
-    color: "#f97316",
-    fontWeight: "bold",
-    cursor: "pointer",
-  },
+  pageWrapper: { minHeight: "100vh", backgroundColor: "#0e1525", display: "flex", justifyContent: "center", alignItems: "center", padding: "20px" },
+  container: { width: "100%", maxWidth: "400px", color: "#fff", textAlign: "center" },
+  heading: { fontSize: "28px", fontWeight: "bold", marginBottom: "20px", color: "#f97316" },
+  form: { backgroundColor: "#1e293b", padding: "30px", borderRadius: "15px", width: "100%", textAlign: "left", boxShadow: "0 4px 15px rgba(0,0,0,0.5)" },
+  label: { fontSize: "14px", marginBottom: "5px", display: "block", color: "#ddd" },
+  input: { width: "100%", padding: "12px", marginBottom: "15px", border: "1px solid #334155", borderRadius: "8px", outline: "none", backgroundColor: "#0f172a", color: "#fff", boxSizing: "border-box" },
+  noteBox: { backgroundColor: "#1f2937", border: "1px solid #f97316", borderRadius: "8px", padding: "10px", marginBottom: "15px" },
+  noteText: { color: "#f97316", fontSize: "14px", margin: 0 },
+  forgotWrapper: { textAlign: "right", marginBottom: "15px" },
+  forgotLink: { fontSize: "14px", color: "#f97316", textDecoration: "none", cursor: "pointer" },
+  submitButton: { width: "100%", padding: "12px", backgroundColor: "#f97316", border: "none", borderRadius: "8px", fontWeight: "bold", color: "#fff", cursor: "pointer", marginTop: "10px", textAlign: "center", transition: "0.3s" },
+  signupText: { textAlign: "center", fontSize: "14px", marginTop: "20px", color: "#ccc" },
+  signupLink: { color: "#f97316", fontWeight: "bold", cursor: "pointer" },
 };
+

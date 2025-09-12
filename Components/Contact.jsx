@@ -40,13 +40,13 @@ export default function Contact() {
     setIsSubmitting(true);
     setSubmitStatus('');
 
-    // EmailJS configuration (you'll need to set up your EmailJS account)
     const templateParams = {
-      title: "Contact Request",      // or formData.subject if you have one
-      name: formData.userName,       // match {{name}}
-      email: formData.userEmail,     // match {{email}}
-      message: formData.message      // match {{message}}
+      user_email: formData.userEmail,
+      message: formData.message,
+      time: new Date().toLocaleString(),
+      reply_to: formData.userEmail   // ✅ add this line
     };
+
 
 
     try {
@@ -465,6 +465,7 @@ export default function Contact() {
               <strong>Our Email:</strong> sehatsaathi2025@gmail.com
             </div>
 
+
             <form onSubmit={handleSubmit}>
               <label style={labelStyle}>Your Email Address</label>
               <input
@@ -503,20 +504,20 @@ export default function Contact() {
                 ) : (
                   <>
                     Send Message
-                    <span style={{ marginLeft: "8px" }}>🚀</span>
+                    <span style={{ marginLeft: "8px" }}></span>
                   </>
                 )}
               </button>
 
               {submitStatus === 'success' && (
                 <div style={statusMessageStyle('success')}>
-                  ✅ Message sent successfully! We'll get back to you soon.
+                  Message sent successfully! We'll get back to you soon.
                 </div>
               )}
 
               {submitStatus === 'error' && (
                 <div style={statusMessageStyle('error')}>
-                  ❌ Failed to send message. Please try again or contact us directly.
+                  Failed to send message. Please try again or contact us directly.
                 </div>
               )}
             </form>

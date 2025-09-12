@@ -206,6 +206,11 @@ export default function Navbar() {
 
   const handleDashboard = () => {
     setShowDropdown(false);
+    navigate('/user-dashboard'); // Fixed: Navigate to correct route
+  };
+
+  const handleConsultation = () => {
+    setShowDropdown(false);
     navigate('/consultation');
   };
 
@@ -286,7 +291,15 @@ export default function Navbar() {
                     onMouseEnter={(e) => e.target.style.backgroundColor = '#f5f5f5'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
                   >
-                    <span>📋</span> Dashboard
+                    <span></span> Dashboard
+                  </button>
+                  <button 
+                    style={dropdownItemStyle}
+                    onClick={handleConsultation}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = '#f5f5f5'}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+                  >
+                    <span></span> Consultation
                   </button>
                   <button 
                     style={dropdownItemStyle}
@@ -294,7 +307,7 @@ export default function Navbar() {
                     onMouseEnter={(e) => e.target.style.backgroundColor = '#f5f5f5'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
                   >
-                    <span>🚪</span> Logout
+                    <span></span> Logout
                   </button>
                 </div>
               )}

@@ -9,9 +9,13 @@ import Contact from '../Components/Contact';
 import Footer from '../Components/Footer';
 import Signup from '../Components/Signup.jsx';
 import Login from '../Components/Login.jsx';
+import DoctorSignup from '../Components/DoctorSignup.jsx';
 import Consultation from '../Components/Consultation.jsx';
 //import DoctorLogin from '../Components/DoctorLogin.jsx';
-import ProtectedRoute from './Routes/ProtectedRoute.jsx';
+import UserDashboard from '../Components/UserDashboard.jsx';
+import ForgotPassword from '../Components/ForgotPassword.jsx';
+//import ProtectedRoute from './Routes/ProtectedRoute.jsx';
+import DoctorDashboard from '../Components/doctorDashboard.jsx';
 import PrescriptionAnalyzer from '../Components/PrescriptionAnalyzer.jsx';
 import './index.css';
 
@@ -102,19 +106,34 @@ const AppContent = () => {
         <Route
           path="/signup"
           element={
-            <ProtectedRoute>
-              <Signup />
-            </ProtectedRoute>
+              <Signup /> 
+          }
+        />
+         <Route
+          path="/doctorsignup"
+          element={
+              <DoctorSignup />
           }
         />
         <Route
           path="/login"
-          element={
-            <ProtectedRoute>
-              <Login />
-            </ProtectedRoute>
+          element={  
+              <Login />  
           }
         />
+        <Route
+          path='/user-dashboard'
+          element={
+            <UserDashboard/>
+          }
+        />
+         <Route
+          path='/doctor-dashboard'
+          element={
+            <DoctorDashboard/>
+          }
+        />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </div>
   );
